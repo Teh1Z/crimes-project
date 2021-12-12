@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<html>
+    <head>
+        <title>Dataset project</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}?20211207">
+    </head>
+<body>
+<div>
+    <div class="vertical-menu">
+      <a style="background-color: #009879; border-radius: 10px 10px 0 0;" href="#" class="active"></a>
+        {% for text, link in links.items() %}
+            <a href="{{ link }}">{{ text }}</a>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+{% if image != None  %}
+    <div style="margin-left:20%;margin-top:3%;border: 2px;">
+        <img src="{{ url_for('static', filename='tmp/' + image[0]) }}?{{ code }}" alt="{{ image[1] }}" style="max-width:1000px;border: 5px solid #555;">
+    </div>
+{% endif %}
+
+
+{% if html_string != None  %}
+    <div style="float: center;margin-left:20%;margin-top:20%%;border: 2px;">
+        {{ html_string | safe }}
+    </div>
+{% endif %}
+
+
+{% if html_intro != None %}
+    <div class="statistic-table">
+        {% for str in html_intro %}
+            {{ str }}<br>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+<div style="display: -webkit-box;margin-left:20%;margin-top:3%;border: 2px;">
+    {% if filters != None  %}
+        <div style="margin-bottom:2%;">
+            <form method="POST">
+                <table class="statistic-table">
+                    <thead>
+                        <tr>
+                            <th>{{ filters[0] }}</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for crime in filters[1][1:] %}
+                            <tr>
+                                <td>{{ crime.replace('_', ' ') }}</td><td>
+                                    <input type="checkbox" value="{{ crime }}" name="filters"></td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <input type="submit">
+            </form>
+        </div>
+    {% endif %}
+    <div style="margin-left: 20%; margin-top: 3%;">
+        {% if html_table != None  %}
+        <div>
+            {% for name, stat in html_table %}
+            <table class="statistic-table">
+                <thead>
+                    <tr style="text-align: center;">
+                        <th>Statistic for {{ name }}<th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat_name, value in stat.items() %}
+                        <tr style="text-align: center;">
+                            <td> {{ stat_name }} </td>
+                            <td> {{ value }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
